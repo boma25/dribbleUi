@@ -1,9 +1,25 @@
 import Geolocation from 'react-native-geolocation-service';
 import Geocoder from 'react-native-geocoder';
+import {Platform, PermissionsAndroid} from 'react-native';
 
 const getLocation = async () => {
-  const permission = await Geolocation.requestAuthorization('whenInUse');
-  if (permission === 'granted') {
+  const permission =
+    Platform.OS === 'ios'
+      ? await Geolocation.requestAuthorization('whenInUse')
+      : await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+          {
+            title: 'Location',
+            message: 'Dribble ui would like to make use of your location',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+  if (
+    permission === 'granted' ||
+    permission === PermissionsAndroid.RESULTS.GRANTED
+  ) {
     try {
       const geolocation = new Promise((resolve, reject) => {
         Geolocation.getCurrentPosition(

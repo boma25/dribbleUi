@@ -10,7 +10,7 @@ const Header = () => {
 
   const _getLocation = async () => {
     const location = await getLocation();
-    setLocation(location.country);
+    setLocation(location?.country);
   };
   useEffect(() => {
     _getLocation();
