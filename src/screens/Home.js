@@ -1,5 +1,11 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, ScrollView, StyleSheet} from 'react-native';
+import {
+  SafeAreaView,
+  StatusBar,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import colors from '../utils/colors';
 import Header from '../components/home/header';
 import Services from '../components/home/service';
@@ -10,20 +16,27 @@ const Home = () => {
   return (
     <SafeAreaView>
       <StatusBar />
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <Header />
-        <CardCarousel />
-        <Services />
-        <RecentTransactions />
-      </ScrollView>
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.scrollStyle}
+          showsVerticalScrollIndicator={false}>
+          <Header />
+          <CardCarousel />
+          <Services />
+          <RecentTransactions />
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    height: '100%',
+    paddingTop: '5%',
+  },
+  scrollStyle: {
     backgroundColor: colors.LightGrey,
-    paddingVertical: '5%',
     height: '100%',
   },
 });

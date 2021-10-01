@@ -6,11 +6,16 @@ import SearchSvg from '../../assets/home/search';
 import {getLocation} from '../../helpers/geolocation.helper';
 
 const Header = () => {
-  const [location, setLocation] = useState('lagos');
+  const [location, setLocation] = useState('searching');
 
   const _getLocation = async () => {
-    const location = await getLocation();
-    setLocation(location?.country);
+    try {
+      const location = await getLocation();
+      const {locality, subLocality} = location;
+      setLocation({locality, subLocality});
+    } catch (error) {
+      setLocation('not found');
+    }
   };
   useEffect(() => {
     _getLocation();
@@ -26,7 +31,14 @@ const Header = () => {
         />
         <View>
           <Text style={styles.helloText}>Hello</Text>
-          <Text style={styles.locationText}>{location}</Text>
+          <View style={styles.locationTextContainer}>
+            <Text style={styles.subLocationText}>
+              {location.subLocality ? location.subLocality : location}
+            </Text>
+            {location.locality && (
+              <Text style={styles.locationText}>-({location.locality})</Text>
+            )}
+          </View>
         </View>
       </View>
       <View style={styles.searchContainer}>
@@ -47,6 +59,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: '100%',
     width: '70%',
+    alignItems: 'center',
   },
   userImage: {
     width: '17%',
@@ -57,9 +70,13 @@ const styles = StyleSheet.create({
   helloText: {
     fontSize: fontSize.normal,
   },
-  locationText: {
-    fontSize: fontSize.medium,
+  subLocationText: {
+    fontSize: fontSize.normal2,
     fontWeight: '700',
+  },
+  locationText: {
+    fontSize: fontSize.small,
+    fontWeight: '600',
   },
   searchContainer: {
     backgroundColor: colors.White,
@@ -73,6 +90,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 10,
     shadowColor: colors.Black,
+  },
+  locationTextContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 
