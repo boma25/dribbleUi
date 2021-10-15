@@ -12,6 +12,7 @@ const Header = () => {
     try {
       const location = await getLocation();
       const {locality, subLocality} = location;
+      console.log({locality, subLocality});
       setLocation({locality, subLocality});
     } catch (error) {
       setLocation('not found');
@@ -33,10 +34,12 @@ const Header = () => {
           <Text style={styles.helloText}>Hello</Text>
           <View style={styles.locationTextContainer}>
             <Text style={styles.subLocationText}>
-              {location.subLocality ? location.subLocality : location}
+              {location?.subLocality ? location.subLocality : 'not found'}
             </Text>
             {location.locality && (
-              <Text style={styles.locationText}>-({location.locality})</Text>
+              <Text style={styles.locationText}>
+                -({location?.locality || 'not found'})
+              </Text>
             )}
           </View>
         </View>
